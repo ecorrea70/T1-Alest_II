@@ -1,8 +1,18 @@
-filename = "casos-de-teste/teste.txt"
+filename = "casos-de-teste/casoD50.txt"
 initial_char = "-"
 currentX = 0
 currentY = 0
 counter = 0
+
+from enum import Enum
+
+class Directions(Enum):
+    RIGHT = 'right'
+    LEFT = 'left'
+    UP = 'up'
+    DOWN = 'down'
+
+direction = Directions.RIGHT
 
 try: 
     with open(filename, "r") as file:
@@ -51,11 +61,67 @@ while rows[currentX][currentY] != "#":
     currentChar = rows[currentX][currentY]
 
     if currentChar == "-":
-        moveRight()
-    else:
-        if currentChar.isdigit():
-            counter += int(currentChar)
-        moveDown()  
+        if(direction==Directions.RIGHT):
+            moveRight();
+        elif(direction==Directions.LEFT):
+            moveLeft()
+        elif(direction==Directions.UP):
+            moveUp()  
+        elif(direction==Directions.DOWN):
+            moveDown()        
+
+    elif currentChar.isdigit():
+        counter += int(currentChar)
+        if(direction==Directions.RIGHT):
+            moveRight()
+        elif(direction==Directions.LEFT):
+            moveLeft()
+        elif(direction==Directions.UP):
+            moveUp()  
+        elif(direction==Directions.DOWN):
+            moveDown()                              
+    
+
+    elif currentChar =="\\":
+        if(direction==Directions.RIGHT):
+            moveDown()
+            direction=Directions.DOWN
+        elif(direction==Directions.DOWN):
+            moveRight()
+            direction=Directions.RIGHT
+        elif(direction==Directions.UP):
+            moveLeft()
+            direction = Directions.LEFT
+        elif(direction==Directions.LEFT):
+            moveUp()
+            direction=Directions.UP
+
+    elif currentChar =="|":
+        if(direction==Directions.RIGHT):
+            moveRight();
+        elif(direction==Directions.LEFT):
+            moveLeft()
+        elif(direction==Directions.UP):
+            moveUp()  
+        elif(direction==Directions.DOWN):
+            moveDown() 
+
+    elif currentChar =="/":
+        if(direction==Directions.RIGHT):
+            moveUp()
+            direction=Directions.UP
+        elif(direction==Directions.DOWN):
+            moveLeft()
+            direction=Directions.LEFT
+        elif(direction==Directions.UP):
+            moveRight()
+            direction = Directions.RIGHT
+        elif(direction==Directions.LEFT):
+            moveDown()
+            direction=Directions.DOWN
+
+
+     
 
 print(f"Encontrou o caractere '#' na linha {currentX + 1}, coluna {currentY + 1}")
 print(counter)
