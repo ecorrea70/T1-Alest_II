@@ -3,6 +3,7 @@ initial_char = "-"
 currentX = 0
 currentY = 0
 counter = 0
+number_buffer = ""
 
 from enum import Enum
 
@@ -62,7 +63,7 @@ while rows[currentX][currentY] != "#":
 
     if currentChar == "-":
         if(direction==Directions.RIGHT):
-            moveRight();
+            moveRight()
         elif(direction==Directions.LEFT):
             moveLeft()
         elif(direction==Directions.UP):
@@ -71,16 +72,16 @@ while rows[currentX][currentY] != "#":
             moveDown()        
 
     elif currentChar.isdigit():
-        counter += int(currentChar)
-        if(direction==Directions.RIGHT):
+        number_buffer += currentChar
+
+        if direction == Directions.RIGHT:
             moveRight()
-        elif(direction==Directions.LEFT):
+        elif direction == Directions.LEFT:
             moveLeft()
-        elif(direction==Directions.UP):
-            moveUp()  
-        elif(direction==Directions.DOWN):
-            moveDown()                              
-    
+        elif direction == Directions.UP:
+            moveUp()
+        elif direction == Directions.DOWN:
+            moveDown()
 
     elif currentChar =="\\":
         if(direction==Directions.RIGHT):
@@ -98,7 +99,7 @@ while rows[currentX][currentY] != "#":
 
     elif currentChar =="|":
         if(direction==Directions.RIGHT):
-            moveRight();
+            moveRight()
         elif(direction==Directions.LEFT):
             moveLeft()
         elif(direction==Directions.UP):
@@ -120,8 +121,15 @@ while rows[currentX][currentY] != "#":
             moveDown()
             direction=Directions.DOWN
 
+    # Verificar se chegamos ao final do número
+    if currentChar in ['/', '|', '#']:
+        if number_buffer:  # Se houver um número no buffer, adicione-o ao contador
+            counter += int(number_buffer)
+            number_buffer = ""  # Limpar o buffer para o próximo número
 
-     
+        # Verificar se precisamos inverter o número (caso tenhamos vindo da direita para a esquerda)
+        if direction == Directions.LEFT:
+            counter *= -1
 
 print(f"Encontrou o caractere '#' na linha {currentX + 1}, coluna {currentY + 1}")
 print(counter)
